@@ -10,9 +10,12 @@ def limpar_html(texto):
 
 
 def ler_emails():
+    if not EMAIL_USUARIO or not SENHA_APP:
+        print("EMAIL_USUARIO ou SENHA_APP não definidos. Verifique o .env.")
+        return [], ""
     try:
         mail = imaplib.IMAP4_SSL("imap.gmail.com")
-        mail.login(EMAIL_USUARIO, SENHA_APP)
+        mail.login(str(EMAIL_USUARIO), str(SENHA_APP))
         print("Conectado com sucesso ao servidor de email")
     except Exception as e:
         print(f"Erro ao conectar com o servidor de email: {e}")
@@ -51,53 +54,58 @@ def ler_emails():
                         if tipo_content == "text/plain":
                             try:
                                 corpo_raw = parte.get_payload(decode=True)
-                                try:
-                                    corpo = corpo_raw.decode('utf-8')
-                                except UnicodeDecodeError:
+                                if isinstance(corpo_raw, bytes):
                                     try:
-                                        corpo = corpo_raw.decode('latin1')
-                                    except Exception as e:
-                                        print(f"Erro ao decodificar corpo do email com latin1: {e}")
-                                        corpo = ""
+                                        corpo = corpo_raw.decode('utf-8')
+                                    except UnicodeDecodeError:
+                                        try:
+                                            corpo = corpo_raw.decode('latin1')
+                                        except Exception as e:
+                                            print(f"Erro ao decodificar corpo do email com latin1: {e}")
+                                            corpo = ""
+                                elif isinstance(corpo_raw, str):
+                                    corpo = corpo_raw
+                                else:
+                                    corpo = str(corpo_raw)
                             except Exception as e:
                                 print(f"Erro ao decodificar parte do email: {e}")
                                 corpo = ""
                 else:
                     try:
                         corpo_raw = msg.get_payload(decode=True)
-                        try:
-                            corpo = corpo_raw.decode('utf-8')
-                        except UnicodeDecodeError:
+                        if isinstance(corpo_raw, bytes):
                             try:
-                                corpo = corpo_raw.decode('latin1')
-                            except Exception as e:
-                                print(f"Erro ao decodificar corpo do email com latint1: {e}")
-                                corpo = ""
+                                corpo = corpo_raw.decode('utf-8')
+                            except UnicodeDecodeError:
+                                try:
+                                    corpo = corpo_raw.decode('latin1')
+                                except Exception as e:
+                                    print(f"Erro ao decodificar corpo do email com latin1: {e}")
+                                    corpo = ""
+                        elif isinstance(corpo_raw, str):
+                            corpo = corpo_raw
+                        else:
+                            corpo = str(corpo_raw)
                     except Exception as e:
                         print(f"Erro ao decodificar o corpo do email: {e}")
                         corpo = ""
 
-                PALAVRAS_NIVEL = ['iniciante', 'junior', 'nível básico', 'estágio']
-                PALAVRAS_TECNOLOGIA = ['python', 'sql', 'dados', 'power bi', 'excel']
-                PALAVRAS_CONTEXTO = ['projeto', 'freela', 'vaga', 'remoto', 'analista']
+                PALAVRAS_CHAVE = [
+                    'python', 'sql', 'dados', 'power bi', 'excel', 'projeto', 'freela', 'vaga', 'remoto', 'analista',
+                    'iniciante', 'junior', 'nível básico', 'estágio', 'trabalho', 'oportunidade', 'desenvolvedor', 'estudante'
+                ]
 
                 texto_completo = f"{assunto.lower()} {corpo.lower()}"
 
-                nivel_ok =any(p in texto_completo for p in PALAVRAS_NIVEL)
-
-                tecnologia_ok =any(p in texto_completo for p in PALAVRAS_TECNOLOGIA)
-
-                contexto_ok =any(p in texto_completo for p in PALAVRAS_CONTEXTO)
+                contem_palavra_chave = any(p in texto_completo for p in PALAVRAS_CHAVE)
                 print("\n--- DEBUG ---")
                 print("Assunto:", assunto)
                 print("Corpo (trecho):", corpo[:200])
                 print("Texto completo:", texto_completo)
-                print("Nível OK?", nivel_ok)
-                print("Tecnologia OK?", tecnologia_ok)
-                print("Contexto OK?", contexto_ok)
+                print("Contém palavra-chave?", contem_palavra_chave)
                 print("----------------\n")
 
-                if nivel_ok and tecnologia_ok and contexto_ok:
+                if contem_palavra_chave:
                     corpo_limpo = limpar_html(corpo)
                     emails_filtrados.append({"assunto": assunto, "corpo": corpo_limpo})
                     resumo += f"Assunto: {assunto}\n\n{'-'*50}\n"
