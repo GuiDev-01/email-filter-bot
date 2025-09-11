@@ -26,9 +26,11 @@ def exportar_para_google_sheets(emails_filtrados):
         aba.append_row(["Assunto", "Corpo"])
 
         for email in emails_filtrados:
-            corpo_limpo = limpar_html(email["corpo"])
-            corpo_limitado = corpo_limpo[:5000]
-            aba.append_row([email["assunto"],corpo_limitado])
+            corpo = email["corpo"]
+            if not isinstance(corpo, str):
+                corpo = str(corpo)
+            corpo_limitado = corpo[:5000]
+            aba.append_row([email["assunto"], corpo_limitado])
         print("Exportado para o Google Sheets com sucesso!")
     except Exception as e:
         print(f"Erro ao exportar para o Google Sheets: {e}")
