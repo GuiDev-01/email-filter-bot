@@ -1,4 +1,4 @@
-# �️ Prints da Interface
+# 💻 Prints da Interface
 
 ### Dashboard
 ![Dashboard do Streamlit](imgs/Dashboard.png)
@@ -8,7 +8,8 @@
 
 ### Métricas
 ![Métricas](imgs/Metricas.png)
-# �📧 email-filter-bot
+
+# 📧 email-filter-bot
 
 Um bot automatizado desenvolvido em Python para **ler, filtrar e exportar e-mails** com base em palavras-chave, integrando com **CSV**, **Google Sheets** e **Telegram**.
 
