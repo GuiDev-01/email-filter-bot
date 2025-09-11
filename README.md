@@ -1,4 +1,14 @@
-# 📧 email-filter-bot
+# �️ Prints da Interface
+
+### Dashboard
+![Dashboard do Streamlit](imgs/Dashboard.png)
+
+### Funcionalidades
+![Funcionalidades](imgs/Funcionalidades.png)
+
+### Métricas
+![Métricas](imgs/Metricas.png)
+# �📧 email-filter-bot
 
 Um bot automatizado desenvolvido em Python para **ler, filtrar e exportar e-mails** com base em palavras-chave, integrando com **CSV**, **Google Sheets** e **Telegram**.
 
@@ -26,6 +36,21 @@ email-filter-bot/
 ├── README.md                   # Documentação do projeto
 ```
 
+
+## 🖥️ Interface Visual
+
+O projeto conta com uma interface web interativa feita com **Streamlit**:
+
+* Visualize, filtre e exporte emails facilmente
+* Veja gráficos de estatísticas por palavra-chave
+* Baixe arquivos CSV exportados direto pela interface
+
+Para rodar a interface:
+
+```bash
+streamlit run app.py
+```
+
 ## 🛠 Como Funciona
 
 1. **Leitura de e-mails:** o bot acessa sua caixa de entrada do Gmail via IMAP.
@@ -36,6 +61,7 @@ email-filter-bot/
    * **Contexto:** freela, projeto, vaga, remoto...
 3. **Exporta os dados:** para um CSV local e uma planilha no Google Sheets.
 4. **Envio:** o resumo é enviado para seu e-mail e via Telegram.
+
 
 ## ⚙️ Configuração
 
@@ -54,6 +80,22 @@ No `config.py`, o `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID` são definidos diret
 * **Gmail:** use uma senha de aplicativo para autenticar.
 * **Google Sheets:** crie um projeto no Google Cloud, ative a API do Sheets, e gere uma chave do tipo service account (JSON).
 
+
+## 📦 Dependências
+
+Instale as dependências do projeto com:
+
+```bash
+pip install -r requirements.txt
+```
+
+Principais pacotes:
+- streamlit
+- gspread
+- google-auth
+- python-dotenv
+- pytest
+
 ## ▶️ Executando
 
 Com tudo configurado, basta rodar o bot com:
@@ -62,10 +104,21 @@ Com tudo configurado, basta rodar o bot com:
 python main.py
 ```
 
+
+## 🧪 Testes Automatizados
+
+O projeto possui testes unitários com **pytest**. Para rodar os testes:
+
+```bash
+pytest tests/
+```
+
 ## 📌 Observações
 
 * O projeto está em versão inicial, mas funcional.
-* Os dados de autenticação e credenciais **não devem ser expostos publicamente** (mas aqui foram mantidos intencionalmente para demonstração).
+
+* Os dados de autenticação e credenciais **não devem ser expostos publicamente**. Nunca faça commit de arquivos `.env` ou credenciais reais em projetos públicos.
+* Prints e vídeos da interface podem ser adicionados para enriquecer o portfólio.
 
 ## 📧 Contato
 
